@@ -1,0 +1,53 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+    {% if title %}
+    {{ title }} - FLAME
+    {% else %}
+    Welcome to FLAME
+    {% endif %}
+{% endblock %}
+
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+{% endblock %}
+
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">FLAME<span class="text-danger glyphicon glyphicon-fire"></span></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
+                <li><a href="/devices"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Devices</a></li>
+                <li><a href="/commands"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Commands</a></li>
+                <li><a href="/changepass"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> ChangePass</a></li>
+                <li><a href="/config"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> ConfigThrow</a></li>
+                <li><a href="/new"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> NewApp</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    {% block page_content %}{% endblock %}
+</div>
+
+{% endblock %}

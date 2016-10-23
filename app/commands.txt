@@ -1,0 +1,3 @@
+sh ip int br | in down
+sh ver | in up
+show int desc

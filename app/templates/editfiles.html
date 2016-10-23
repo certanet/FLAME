@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+<div class="col-sm-8">
+    <form action="/{{ dname }}" method="post">
+        <div class="form-group">
+            <label for="config">{{ dname }}.txt:</label>
+            <textarea class="form-control" rows="{{ len }}" name="config" id="config"
+                      {% if len < 3%}disabled{% endif %}>{{ confile }}</textarea>
+        </div>
+</div>
+
+<div class="col-sm-8" align="right">
+    {% if len > 2 %}
+        <button type="submit" class="btn btn-primary" name="do" value="download">Download</button>
+        <button type="submit" class="btn btn-success" name="do" value="save">Save</button>
+    {% endif %}
+    <button type="button" class="btn btn-danger" onclick="window.history.back()">Cancel</button>
+
+    </form>
+    <br><br>
+</div>
+
+{% endblock %}

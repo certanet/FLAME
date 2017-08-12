@@ -1,5 +1,6 @@
 from netmiko import ConnectHandler
-from netmiko.ssh_exception import NetMikoTimeoutException, NetMikoAuthenticationException
+from netmiko.ssh_exception import NetMikoTimeoutException,\
+    NetMikoAuthenticationException
 
 
 def setup():
@@ -11,11 +12,14 @@ def setup():
     username = user
     pass
 
+
 def filesetup(filename):
     import os
-    APP_ROOT = os.path.dirname(os.path.abspath(__file__))  # refers to application_top
+    # refers to application_top:
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     fullfile = os.path.join(APP_ROOT, filename + '.txt')
     return fullfile
+
 
 def dochangepass(user, oldPass, newPass, oldENPass, newENPass):
     ios_device = {'device_type': 'cisco_ios'}
@@ -24,9 +28,9 @@ def dochangepass(user, oldPass, newPass, oldENPass, newENPass):
     userPass = [oldPass, newPass]
     enablePass = [oldENPass, newENPass]
 
-    ios_device['username'] = username #current username
-    ios_device['password'] = userPass[0] #old user_pass
-    ios_device['secret'] = enablePass[0] #old enable_pass
+    ios_device['username'] = username  # current username
+    ios_device['password'] = userPass[0]  # old user_pass
+    ios_device['secret'] = enablePass[0]  # old enable_pass
 
     config_commands = ['username ' + username + ' password ' + userPass[1],
                        'enable secret ' + enablePass[1],
@@ -38,25 +42,24 @@ def dochangepass(user, oldPass, newPass, oldENPass, newENPass):
         for line in fp:
             line = line[:-1]
             ios_device['ip'] = line
-            print (":::::::::::::" + line + ":::::::::::::")
+            print(":::::::::::::" + line + ":::::::::::::")
             try:
                 net_connect = ConnectHandler(**ios_device)
                 net_connect.enable()
                 output = net_connect.send_config_set(config_commands)
                 net_connect.disconnect()
-                print (output)
+                print(output)
             except NetMikoAuthenticationException as e:
                 z = e
-                print (z)
+                print(z)
             except NetMikoTimeoutException as e:
                 z = e
-                print (z)
-                print ("Device is unreachable.")
+                print(z)
+                print("Device is unreachable.")
             except Exception as e:
                 z = e
-                print ("\nOops! A general error occurred, here's the message:")
-                print (z)
-
+                print("\nOops! A general error occurred, here's the message:")
+                print(z)
 
 
 def doconfthrow(user, user_pass, enPass, confmode):
@@ -79,19 +82,19 @@ def doconfthrow(user, user_pass, enPass, confmode):
     from datetime import datetime
     run_time = datetime.now().strftime('%Y-%m-%d_%H-%M')
     logfile = './app/cmds-' + run_time + '.log'
-    print ("Begging log to - " + logfile)
+    print("Beginning log to - " + logfile)
 
     def logme(output):
-        f1=open(logfile, 'a')
+        f1 = open(logfile, 'a')
         f1.write(output + "\n")
-        print (output)
+        print(output)
 
     commands = filesetup("commands")
 
     with open(commands) as fp:
         for line in fp:
             line = line[:-1]
-            config_commands.append(line)    
+            config_commands.append(line)
 
     devices = filesetup("devices")
 
@@ -109,7 +112,7 @@ def doconfthrow(user, user_pass, enPass, confmode):
                 elif config_mode == "user":
                     for cmd in config_commands:
                         logme(cmd + ":")
-                        output = net_connect.send_command(cmd)                   
+                        output = net_connect.send_command(cmd)
                         logme(output)
                 net_connect.disconnect()
             except NetMikoAuthenticationException as e:

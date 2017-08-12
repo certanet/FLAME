@@ -1,4 +1,4 @@
-from flask import Flask, render_template, make_response, request, redirect, url_for
+from flask import render_template, make_response, request
 from flask_bootstrap import Bootstrap
 from app import app
 from .forms import ChangePassForm, ConfigThrowForm
@@ -17,7 +17,7 @@ def home():
 @app.route('/new')
 def tbc():
 
-    #Placeholder page
+    # Placeholder page
 
     return render_template('index.html',
                            title='Coming Soon',
@@ -40,8 +40,8 @@ def changepass():
         dochangepass(user, oldPass, newPass, oldENPass, newENPass)
 
         return render_template('index.html',
-                                   title='Home',
-                                   strapline='The form submitted OK with user: ' + user)
+                               title='Home',
+                               strapline='The form submitted OK with user: ' + user)
 
     return render_template('formpage.html',
                            title='ChangePass',
@@ -53,7 +53,7 @@ def changepass():
 
 @app.route('/config', methods=['GET', 'POST'])
 def config():
-    form = ConfigThrowForm(csrf_enabled=False)
+    form = ConfigThrowForm()
     form_desc = "This pushes out commands (from commands.txt) to devices (in devices.txt)"
 
     if form.validate_on_submit():
@@ -65,8 +65,8 @@ def config():
         doconfthrow(user, user_pass, enPass, confmode)
 
         return render_template('index.html',
-                                   title='Home',
-                                   strapline='The form submitted OK with user: ' + user + ' & Config mode: ' + confmode)
+                               title='Home',
+                               strapline='The form submitted OK with user: ' + user + ' & Config mode: ' + confmode)
 
     return render_template('formpage.html',
                            title='ConfigThrow',
@@ -108,6 +108,7 @@ def formpage(app):
                            form=form,
                            form_desc=form_desc)
 """
+
 
 @app.route('/devices', methods=['GET', 'POST'], defaults={'dname': "devices"})
 @app.route('/commands', methods=['GET', 'POST'], defaults={'dname': "commands"})
@@ -152,9 +153,17 @@ def editfiles(dname):
             file = open(confile_path, 'w', newline="\n")
             file.write(data)
             file.close()
-        return render_template('editfiles.html', confile=data, len=length, dname=dname, title=dname)
+        return render_template('editfiles.html',
+                               confile=data,
+                               len=length,
+                               dname=dname,
+                               title=dname)
 
-    return render_template('editfiles.html', confile=confile, len=length, dname=dname, title=dname)
+    return render_template('editfiles.html',
+                           confile=confile,
+                           len=length,
+                           dname=dname,
+                           title=dname)
 
 
 # Error page routes
